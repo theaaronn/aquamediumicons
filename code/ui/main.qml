@@ -11,7 +11,6 @@ import QtQuick.Layouts 1.15
 import org.kde.plasma.core as PlasmaCore
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.ksvg 1.0 as KSvg
-import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kwin 3.0 as KWin
 
 KWin.TabBoxSwitcher {
@@ -23,13 +22,14 @@ KWin.TabBoxSwitcher {
         location: PlasmaCore.Types.Floating
         visible: tabBox.visible
         flags: Qt.X11BypassWindowManagerHint
+        backgroundHints: PlasmaCore.Dialog.NoBackground
         x: tabBox.screenGeometry.x + tabBox.screenGeometry.width * 0.5 - dialogMainItem.width * 0.5
         y: tabBox.screenGeometry.y + tabBox.screenGeometry.height * 0.5 - dialogMainItem.height * 0.8
 
         mainItem: ColumnLayout {
             id: dialogMainItem
             spacing: Kirigami.Units.smallSpacing * 2
-
+    
             width: Math.min(Math.max(icons.delegateWidth, icons.implicitWidth), tabBox.screenGeometry.width * 0.9) + Kirigami.Units.largeSpacing * 2
             height: icons.delegateHeight + Kirigami.Units.largeSpacing * 2
             ListView {
@@ -59,8 +59,7 @@ KWin.TabBoxSwitcher {
 
                         anchors{
                             horizontalCenter: parent.horizontalCenter
-                            top: parent.top
-                            topMargin: Kirigami.Units.smallSpacing * 2
+                            verticalCenter: parent.verticalCenter
                         }
 
                         width:  icons.iconSize // delegateHeight
@@ -78,25 +77,6 @@ KWin.TabBoxSwitcher {
                                 icons.currentIndex = index;
                             }
                             onDoubleTapped: icons.model.activate(index)
-                        }
-                    }
-
-                    PlasmaComponents3.Label {
-                        id: textItem
-                        width: parent.width - Kirigami.Units.smallSpacing*2
-                        text: {
-                            var program = (model.caption).split('—')[1]
-                            return (program) ? program : (model.caption).split('-').pop()
-                        }
-                        height: paintedHeight
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        elide: Text.ElideRight
-                        font.weight: icons.currentIndex === index ? Font.Bold : Font.Normal
-                        anchors{
-                            horizontalCenter: parent.horizontalCenter
-                            bottom: parent.bottom
-                            bottomMargin: Kirigami.Units.smallSpacing
                         }
                     }
 
